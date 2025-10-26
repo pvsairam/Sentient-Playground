@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: sentient-playground-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: sentient
+      POSTGRES_PASSWORD: sentient_dev_password
+      POSTGRES_DB: sentient_playground
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sentient"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  agent-service:
+    build:
+      context: ./agent-service
+      dockerfile: Dockerfile
+    container_name: sentient-agent-service
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://sentient:sentient_dev_password@postgres:5432/sentient_playground
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin123}
+      PYTHONUNBUFFERED: 1
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./agent-service:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile.dev
+    container_name: sentient-web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://sentient:sentient_dev_password@postgres:5432/sentient_playground
+      NEXT_PUBLIC_WS_BASE: ws://localhost:8000
+      NEXT_PUBLIC_API_BASE: http://localhost:8000
+    depends_on:
+      - postgres
+      - agent-service
+    volumes:
+      - ./web:/app
+      - /app/node_modules
+      - /app/.next
+    command: npm run dev
+
+volumes:
+  postgres_data:

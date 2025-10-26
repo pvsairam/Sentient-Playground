@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 181 89% 60%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 227 70% 75%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 227 70% 75%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 181 89% 60%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 216 24% 5%;
+    --foreground: 210 40% 95%;
+    --card: 216 20% 7%;
+    --card-foreground: 210 40% 95%;
+    --popover: 216 20% 7%;
+    --popover-foreground: 210 40% 95%;
+    --primary: 181 89% 60%;
+    --primary-foreground: 216 24% 5%;
+    --secondary: 227 70% 75%;
+    --secondary-foreground: 210 40% 95%;
+    --muted: 217 18% 15%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 227 70% 75%;
+    --accent-foreground: 210 40% 95%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 95%;
+    --border: 217 18% 15%;
+    --input: 217 18% 15%;
+    --ring: 181 89% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+}
+
+@layer components {
+  .node-active {
+    @apply fill-primary stroke-primary shadow-lg shadow-primary/50;
+  }
+  
+  .node-inactive {
+    @apply fill-muted/20 stroke-muted-foreground/30;
+  }
+  
+  .link-active {
+    @apply stroke-primary/60 stroke-[2px];
+  }
+  
+  .link-inactive {
+    @apply stroke-muted-foreground/20 stroke-[1px];
+  }
+}
+
+.mdx-content {
+  @apply prose prose-slate dark:prose-invert max-w-none;
+  @apply prose-headings:font-bold prose-headings:tracking-tight;
+  @apply prose-a:text-primary prose-a:no-underline hover:prose-a:underline;
+  @apply prose-code:text-primary prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded;
+  @apply prose-pre:bg-muted prose-pre:border prose-pre:border-border;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

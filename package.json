@@ -1,0 +1,39 @@
+{
+  "name": "sentient-playground",
+  "version": "1.0.0",
+  "description": "Educational platform showcasing Sentient GRID's multi-agent workflow orchestration",
+  "private": true,
+  "workspaces": [
+    "web"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=web",
+    "build": "npm run build --workspace=web",
+    "start": "npm run start --workspace=web",
+    "lint": "npm run lint --workspace=web",
+    "typecheck": "npm run typecheck --workspace=web",
+    "db:generate": "npm run db:generate --workspace=web",
+    "db:push": "npm run db:push --workspace=web",
+    "db:studio": "npm run db:studio --workspace=web",
+    "backend:dev": "cd agent-service && python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000",
+    "backend:install": "cd agent-service && pip install -r requirements.txt",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "setup": "npm install && npm run db:generate && npm run backend:install"
+  },
+  "keywords": [
+    "sentient",
+    "grid",
+    "agi",
+    "multi-agent",
+    "educational",
+    "nextjs",
+    "fastapi"
+  ],
+  "author": "Sentient Community",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

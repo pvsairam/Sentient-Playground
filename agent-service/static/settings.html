@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Sentient Playground</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0c1116 0%, #1a1f2e 100%);
+            color: #e8f0fa;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(12, 17, 22, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(78, 227, 230, 0.1);
+            margin: -2rem -2rem 3rem -2rem;
+            padding: 1.25rem 2rem;
+        }
+        
+        .header-content {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.02em;
+        }
+        
+        .logo a {
+            color: inherit;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .logo-icon {
+            font-size: 1.75rem;
+            filter: drop-shadow(0 0 8px rgba(78, 227, 230, 0.3));
+        }
+        
+        .back-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #a6b3c2;
+            padding: 0.625rem 1.25rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(78, 227, 230, 0.3);
+            color: #4ee3e6;
+            transform: translateX(-2px);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #4ee3e6 0%, #7c9cff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            color: #a6b3c2;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(78, 227, 230, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card h2 {
+            color: #4ee3e6;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .wallet-section {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .wallet-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(78, 227, 230, 0.1);
+            border: 1px solid rgba(78, 227, 230, 0.3);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .wallet-address {
+            font-family: monospace;
+            color: #4ee3e6;
+        }
+        
+        button {
+            padding: 0.75rem 1.5rem;
+            background: #4ee3e6;
+            color: #0c1116;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        button:hover:not(:disabled) {
+            background: #3dd4d7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(78, 227, 230, 0.4);
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        button.secondary {
+            background: transparent;
+            border: 1px solid rgba(78, 227, 230, 0.3);
+            color: #4ee3e6;
+        }
+        
+        button.secondary:hover:not(:disabled) {
+            background: rgba(78, 227, 230, 0.1);
+            transform: none;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #a6b3c2;
+            font-weight: 500;
+        }
+        
+        .label-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .optional {
+            font-size: 0.875rem;
+            color: #7c9cff;
+        }
+        
+        input[type="text"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(78, 227, 230, 0.3);
+            border-radius: 8px;
+            color: #e8f0fa;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #4ee3e6;
+            box-shadow: 0 0 0 3px rgba(78, 227, 230, 0.1);
+        }
+        
+        .help-text {
+            font-size: 0.875rem;
+            color: #7c9cff;
+            margin-top: 0.5rem;
+        }
+        
+        .help-text a {
+            color: #4ee3e6;
+            text-decoration: none;
+        }
+        
+        .help-text a:hover {
+            text-decoration: underline;
+        }
+        
+        .info-box {
+            background: rgba(124, 156, 255, 0.1);
+            border-left: 3px solid #7c9cff;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .info-box h3 {
+            color: #7c9cff;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-box p {
+            color: #a6b3c2;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .save-btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .status-message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .status-message.success {
+            background: rgba(78, 227, 230, 0.1);
+            border: 1px solid rgba(78, 227, 230, 0.3);
+            color: #4ee3e6;
+        }
+        
+        .status-message.error {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            color: #ff6b6b;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+        
+        .status-indicator.connected {
+            background: #4ee3e6;
+        }
+        
+        .status-indicator.disconnected {
+            background: #ff6b6b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <a href="/">
+                        <span class="logo-icon">🌐</span>
+                        <span>Sentient Playground</span>
+                    </a>
+                </div>
+                <a href="/" class="back-btn">
+                    <span>←</span>
+                    <span>Back to Playground</span>
+                </a>
+            </div>
+        </header>
+        
+        <h1>Settings</h1>
+        <p class="subtitle">Configure your API keys to use real-time AI agents. Your keys are stored locally in your browser and never sent to our servers. Use the Connect Wallet button in the header to save your settings across devices.</p>
+        
+        <!-- API Usage Dashboard -->
+        <div class="card" id="usageDashboard" style="display: none;">
+            <h2>📊 API Usage & Credits</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                <div style="background: rgba(78, 227, 230, 0.1); padding: 1.5rem; border-radius: 8px; border: 1px solid rgba(78, 227, 230, 0.2);">
+                    <div style="font-size: 0.875rem; color: #a6b3c2; margin-bottom: 0.5rem;">Total API Calls</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #4ee3e6;" id="totalCalls">0</div>
+                </div>
+                
+                <div style="background: rgba(124, 156, 255, 0.1); padding: 1.5rem; border-radius: 8px; border: 1px solid rgba(124, 156, 255, 0.2);">
+                    <div style="font-size: 0.875rem; color: #a6b3c2; margin-bottom: 0.5rem;">Total Tokens Used</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #7c9cff;" id="totalTokens">0</div>
+                </div>
+                
+                <div style="background: rgba(255, 107, 107, 0.1); padding: 1.5rem; border-radius: 8px; border: 1px solid rgba(255, 107, 107, 0.2);">
+                    <div style="font-size: 0.875rem; color: #a6b3c2; margin-bottom: 0.5rem;">Estimated Cost</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #ff6b6b;" id="totalCost">$0.00</div>
+                </div>
+            </div>
+            
+            <div id="providerBreakdown"></div>
+            
+            <div class="info-box" style="margin-top: 1.5rem;">
+                <h3>💡 About Usage Tracking</h3>
+                <p>Usage data is tracked per wallet address (or browser if not connected). Costs are estimated based on standard API pricing. For exact billing, check your API provider's dashboard.</p>
+            </div>
+        </div>
+        
+        <!-- API Keys Configuration -->
+        <div class="card">
+            <h2>🔑 API Keys</h2>
+            
+            <div id="statusMessage" class="status-message"></div>
+            
+            <div class="info-box">
+                <h3>🔒 Your Keys Are Safe</h3>
+                <p>All API keys are stored locally in your browser (localStorage). They are sent directly to AI providers (OpenAI, Anthropic, Fireworks) and never stored on our servers.</p>
+            </div>
+            
+            <form id="settingsForm">
+                <!-- OpenAI -->
+                <div class="form-group">
+                    <div class="label-header">
+                        <label for="openai_key">OpenAI API Key</label>
+                        <span class="optional">Optional</span>
+                    </div>
+                    <input 
+                        type="password" 
+                        id="openai_key" 
+                        placeholder="sk-..."
+                    >
+                    <div class="help-text">
+                        For GPT-4o and GPT-4o-mini models. 
+                        <a href="https://platform.openai.com/api-keys" target="_blank">Get your key →</a>
+                    </div>
+                </div>
+                
+                <!-- Anthropic -->
+                <div class="form-group">
+                    <div class="label-header">
+                        <label for="anthropic_key">Anthropic API Key</label>
+                        <span class="optional">Optional</span>
+                    </div>
+                    <input 
+                        type="password" 
+                        id="anthropic_key" 
+                        placeholder="sk-ant-..."
+                    >
+                    <div class="help-text">
+                        For Claude 3.5 Sonnet and Haiku models. 
+                        <a href="https://console.anthropic.com/settings/keys" target="_blank">Get your key →</a>
+                    </div>
+                </div>
+                
+                <!-- Fireworks (Dobby) -->
+                <div class="form-group">
+                    <div class="label-header">
+                        <label for="fireworks_key">Fireworks AI Key (Dobby)</label>
+                        <span class="optional">Optional</span>
+                    </div>
+                    <input 
+                        type="password" 
+                        id="fireworks_key" 
+                        placeholder="fw_..."
+                    >
+                    <div class="help-text">
+                        For Sentient's Dobby AI - the first loyal, community-owned AI model. 
+                        <a href="https://fireworks.ai/" target="_blank">Get your key →</a>
+                    </div>
+                </div>
+                
+                <!-- Dobby Model Selection -->
+                <div class="form-group" id="dobbyModelGroup" style="display: none;">
+                    <label for="dobby_model">Dobby Model</label>
+                    <select id="dobby_model">
+                        <option value="accounts/sentientfoundation/models/dobby-unhinged-llama-3-3-70b-new">
+                            Dobby Unhinged 70B (Recommended)
+                        </option>
+                        <option value="accounts/sentientfoundation/models/dobby-mini-unhinged-llama-3-1-8b">
+                            Dobby Mini Unhinged 8B (Faster)
+                        </option>
+                        <option value="accounts/sentientfoundation/models/dobby-mini-leashed-llama-3-1-8b">
+                            Dobby Mini Leashed 8B (Controlled)
+                        </option>
+                    </select>
+                    <div class="help-text">
+                        Dobby is decentralized, pro-freedom AI with an "unhinged" conversational style.
+                    </div>
+                </div>
+                
+                <button type="submit" class="save-btn" id="saveBtn">
+                    Save Settings
+                </button>
+            </form>
+        </div>
+        
+        <!-- Info about Dobby -->
+        <div class="card">
+            <h2>ℹ️ About Dobby AI</h2>
+            <p style="color: #a6b3c2; line-height: 1.6; margin-bottom: 1rem;">
+                <strong style="color: #4ee3e6;">Dobby</strong> is Sentient's first "Loyal AI" - community-owned, pro-freedom, and pro-crypto. 
+                Unlike corporate AI models, Dobby is owned by 650K+ NFT holders who govern its evolution.
+            </p>
+            <ul style="color: #a6b3c2; line-height: 1.8; margin-left: 1.5rem;">
+                <li>🗣️ <strong>Unhinged personality</strong> - Blunt, genuine, human-like conversations</li>
+                <li>🔓 <strong>Open source</strong> - Fully auditable and transparent</li>
+                <li>🏛️ <strong>Community governed</strong> - You own it, you control it</li>
+                <li>⚡ <strong>High performance</strong> - Built on Llama 3.3 70B</li>
+            </ul>
+        </div>
+        
+        <div style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(78, 227, 230, 0.1);">
+            <p style="color: #a6b3c2;">
+                <a href="/" style="color: #4ee3e6; text-decoration: none;">← Back to Playground</a>
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        let walletAddress = null;
+        
+        // Check if MetaMask is installed
+        function isMetaMaskInstalled() {
+            return typeof window.ethereum !== 'undefined';
+        }
+        
+        // Connect wallet
+        async function connectWallet() {
+            if (!isMetaMaskInstalled()) {
+                alert('Please install MetaMask to connect your wallet');
+                window.open('https://metamask.io/download/', '_blank');
+                return;
+            }
+            
+            try {
+                const accounts = await window.ethereum.request({ 
+                    method: 'eth_requestAccounts' 
+                });
+                walletAddress = accounts[0];
+                // Persist wallet address
+                localStorage.setItem('connected_wallet', walletAddress);
+                updateWalletUI();
+                loadSettings();
+            } catch (error) {
+                console.error('Wallet connection error:', error);
+                alert('Failed to connect wallet');
+            }
+        }
+        
+        // Disconnect wallet
+        function disconnectWallet() {
+            walletAddress = null;
+            localStorage.removeItem('connected_wallet');
+            updateWalletUI();
+        }
+        
+        // Update wallet UI (no wallet UI on settings page, just log status)
+        function updateWalletUI() {
+            if (walletAddress) {
+                console.log('✅ Wallet connected:', walletAddress);
+            } else {
+                console.log('ℹ️ No wallet connected (using local storage)');
+            }
+        }
+        
+        // Get storage key
+        function getStorageKey() {
+            return walletAddress ? `sentient_keys_${walletAddress}` : 'sentient_keys_local';
+        }
+        
+        // Load settings
+        async function loadSettings() {
+            // Small delay to ensure wallet state is ready
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
+            const key = getStorageKey();
+            const saved = localStorage.getItem(key);
+            
+            console.log('Loading settings with key:', key, 'Found:', !!saved);
+            
+            if (saved) {
+                try {
+                    const settings = JSON.parse(saved);
+                    if (settings.openai_key) {
+                        document.getElementById('openai_key').value = settings.openai_key;
+                        document.getElementById('openai_key').placeholder = '••••••••' + settings.openai_key.slice(-4);
+                    }
+                    if (settings.anthropic_key) {
+                        document.getElementById('anthropic_key').value = settings.anthropic_key;
+                        document.getElementById('anthropic_key').placeholder = '••••••••' + settings.anthropic_key.slice(-4);
+                    }
+                    if (settings.fireworks_key) {
+                        document.getElementById('fireworks_key').value = settings.fireworks_key;
+                        document.getElementById('fireworks_key').placeholder = '••••••••' + settings.fireworks_key.slice(-4);
+                        document.getElementById('dobbyModelGroup').style.display = 'block';
+                    }
+                    if (settings.dobby_model) document.getElementById('dobby_model').value = settings.dobby_model;
+                    
+                    // Show success message
+                    showMessage('✓ API keys loaded successfully!', 'success');
+                } catch (e) {
+                    console.error('Failed to load settings:', e);
+                }
+            }
+        }
+        
+        // Save settings
+        function saveSettings(e) {
+            e.preventDefault();
+            
+            const settings = {
+                openai_key: document.getElementById('openai_key').value,
+                anthropic_key: document.getElementById('anthropic_key').value,
+                fireworks_key: document.getElementById('fireworks_key').value,
+                dobby_model: document.getElementById('dobby_model').value,
+                wallet: walletAddress
+            };
+            
+            // Validate at least one key
+            if (!settings.openai_key && !settings.anthropic_key && !settings.fireworks_key) {
+                showMessage('Please provide at least one API key', 'error');
+                return;
+            }
+            
+            const key = getStorageKey();
+            localStorage.setItem(key, JSON.stringify(settings));
+            
+            showMessage('✓ Settings saved successfully!', 'success');
+            
+            // Redirect to playground after 2 seconds
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 2000);
+        }
+        
+        // Show message
+        function showMessage(text, type) {
+            const msg = document.getElementById('statusMessage');
+            msg.textContent = text;
+            msg.className = `status-message ${type}`;
+            msg.style.display = 'block';
+            
+            setTimeout(() => {
+                msg.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Show Dobby model selector when Fireworks key is entered
+        document.getElementById('fireworks_key').addEventListener('input', (e) => {
+            const dobbyGroup = document.getElementById('dobbyModelGroup');
+            dobbyGroup.style.display = e.target.value ? 'block' : 'none';
+        });
+        
+        // Form submission
+        document.getElementById('settingsForm').addEventListener('submit', saveSettings);
+        
+        // Check if wallet is already connected on load
+        async function checkWalletOnLoad() {
+            // First, check localStorage for saved wallet
+            const savedWallet = localStorage.getItem('connected_wallet');
+            
+            if (savedWallet && isMetaMaskInstalled()) {
+                try {
+                    // Verify the saved wallet is still connected in MetaMask
+                    const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+                    if (accounts && accounts.includes(savedWallet)) {
+                        walletAddress = savedWallet;
+                        console.log('Wallet restored from localStorage:', walletAddress);
+                    } else {
+                        // Wallet not connected anymore, clear localStorage
+                        localStorage.removeItem('connected_wallet');
+                    }
+                } catch (error) {
+                    console.log('Failed to verify wallet');
+                    localStorage.removeItem('connected_wallet');
+                }
+            }
+            
+            updateWalletUI();
+            await loadSettings();
+            await loadUsageStats();
+        }
+        
+        // Load usage stats
+        async function loadUsageStats() {
+            const userId = walletAddress || 'local';
+            
+            try {
+                const response = await fetch(`/api/usage/${userId}`);
+                const data = await response.json();
+                
+                // Show dashboard if there's any usage
+                if (data.totalCalls > 0) {
+                    document.getElementById('usageDashboard').style.display = 'block';
+                    
+                    // Update totals
+                    document.getElementById('totalCalls').textContent = data.totalCalls.toLocaleString();
+                    document.getElementById('totalTokens').textContent = data.totalTokens.toLocaleString();
+                    document.getElementById('totalCost').textContent = '$' + data.totalCost.toFixed(4);
+                    
+                    // Show provider breakdown
+                    const breakdown = document.getElementById('providerBreakdown');
+                    if (data.providers && data.providers.length > 0) {
+                        breakdown.innerHTML = '<h3 style="color: #4ee3e6; margin-bottom: 1rem;">Provider Breakdown</h3>';
+                        
+                        data.providers.forEach(p => {
+                            const providerName = p.provider.charAt(0).toUpperCase() + p.provider.slice(1);
+                            breakdown.innerHTML += `
+                                <div style="background: rgba(255, 255, 255, 0.03); padding: 1rem; border-radius: 6px; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <div style="font-weight: 600; color: #e8f0fa;">${providerName}</div>
+                                        <div style="font-size: 0.875rem; color: #a6b3c2; margin-top: 0.25rem;">
+                                            ${p.calls} calls • ${p.tokens.toLocaleString()} tokens
+                                        </div>
+                                    </div>
+                                    <div style="font-size: 1.25rem; font-weight: 600; color: #4ee3e6;">
+                                        $${p.cost.toFixed(4)}
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to load usage stats:', error);
+            }
+        }
+        
+        // Initialize on page load - check wallet first, then load settings
+        checkWalletOnLoad();
+        
+        // Listen for account changes
+        if (isMetaMaskInstalled()) {
+            window.ethereum.on('accountsChanged', (accounts) => {
+                if (accounts.length === 0) {
+                    disconnectWallet();
+                } else {
+                    walletAddress = accounts[0];
+                    updateWalletUI();
+                    loadSettings();
+                    loadUsageStats();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

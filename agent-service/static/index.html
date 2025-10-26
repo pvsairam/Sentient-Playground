@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentient Playground - Experience the GRID</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0c1116 0%, #1a1f2e 100%);
+            color: #e8f0fa;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(12, 17, 22, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(78, 227, 230, 0.1);
+            margin: -2rem -2rem 4rem -2rem;
+            padding: 1.25rem 2rem;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.02em;
+        }
+        
+        .logo-icon {
+            font-size: 1.75rem;
+            filter: drop-shadow(0 0 8px rgba(78, 227, 230, 0.3));
+        }
+        
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        nav a,
+        nav button {
+            color: #a6b3c2;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0.625rem 1rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            height: 40px;
+            line-height: 1;
+            border: 1px solid transparent;
+            box-sizing: border-box;
+            vertical-align: middle;
+            margin: 0;
+        }
+        
+        nav a:hover {
+            color: #4ee3e6;
+            background: rgba(78, 227, 230, 0.08);
+        }
+        
+        .nav-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(78, 227, 230, 0.15);
+            margin: 0 0.25rem;
+        }
+        
+        .settings-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #a6b3c2;
+            cursor: pointer;
+        }
+        
+        .settings-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(78, 227, 230, 0.3);
+            color: #4ee3e6;
+        }
+        
+        .wallet-btn {
+            background: linear-gradient(135deg, rgba(78, 227, 230, 0.15), rgba(124, 156, 255, 0.15));
+            border-color: rgba(78, 227, 230, 0.3);
+            color: #4ee3e6;
+            cursor: pointer;
+        }
+        
+        .wallet-btn:hover {
+            background: linear-gradient(135deg, rgba(78, 227, 230, 0.25), rgba(124, 156, 255, 0.25));
+            border-color: #4ee3e6;
+        }
+        
+        .wallet-connected {
+            background: linear-gradient(135deg, rgba(78, 227, 230, 0.2), rgba(124, 156, 255, 0.2));
+            border-color: #4ee3e6;
+        }
+        
+        .hero {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #4ee3e6 0%, #7c9cff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.25rem;
+            color: #a6b3c2;
+            margin-bottom: 2rem;
+        }
+        
+        .playground {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(78, 227, 230, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+        
+        .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #4ee3e6;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(78, 227, 230, 0.3);
+            border-radius: 8px;
+            color: #e8f0fa;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+        }
+        
+        button {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: #4ee3e6;
+            color: #0c1116;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 1rem;
+        }
+        
+        button:hover:not(:disabled) {
+            background: #3dd4d7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(78, 227, 230, 0.4);
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .visualization {
+            min-height: 500px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(78, 227, 230, 0.2);
+            border-radius: 8px;
+            padding: 2rem;
+        }
+        
+        .event-log {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .event {
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background: rgba(124, 156, 255, 0.1);
+            border-left: 3px solid #7c9cff;
+            border-radius: 4px;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .event-type {
+            font-weight: 600;
+            color: #4ee3e6;
+            margin-bottom: 0.5rem;
+        }
+        
+        .event-detail {
+            color: #a6b3c2;
+            font-size: 0.9rem;
+        }
+        
+        .event-time {
+            font-size: 0.75rem;
+            color: #7c9cff;
+            margin-top: 0.5rem;
+        }
+        
+        .examples {
+            margin-top: 1rem;
+        }
+        
+        .example-btn {
+            background: transparent;
+            border: 1px solid rgba(78, 227, 230, 0.3);
+            color: #4ee3e6;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            margin: 0.25rem;
+            width: auto;
+        }
+        
+        .example-btn:hover {
+            background: rgba(78, 227, 230, 0.1);
+            transform: none;
+        }
+        
+        footer {
+            text-align: center;
+            color: #a6b3c2;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(78, 227, 230, 0.1);
+        }
+        
+        .status-running {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #4ee3e6;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+            margin-right: 0.5rem;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🌐</span>
+                    <span>Sentient Playground</span>
+                </div>
+                <nav>
+                    <a href="#playground">Playground</a>
+                    <a href="/demo.html">
+                        <span>🎓</span>
+                        <span>Demo</span>
+                    </a>
+                    <div class="nav-divider"></div>
+                    <a href="/settings.html" class="settings-btn">
+                        <span>⚙️</span>
+                        <span>Settings</span>
+                    </a>
+                    <button id="walletBtn" class="wallet-btn" onclick="connectWallet()">
+                        <span>🔌</span>
+                        <span>Connect Wallet</span>
+                    </button>
+                </nav>
+            </div>
+        </header>
+        
+        <div class="hero">
+            <h1>Experience the GRID</h1>
+            <p class="subtitle">
+                Watch as your queries are routed through specialized AI agents,<br>
+                orchestrated in real-time by Sentient's open-source AGI network.
+            </p>
+        </div>
+        
+        <div class="playground" id="playground">
+            <div class="card">
+                <h2>Ask the GRID</h2>
+                <textarea 
+                    id="promptInput" 
+                    placeholder="Enter your question here...
+For example:
+- Explain Bitcoin halving in simple terms
+- Summarize today's crypto headlines
+- How does the GRID work?"
+                ></textarea>
+                
+                <div class="examples">
+                    <button class="example-btn" onclick="setPrompt('Explain Bitcoin halving in simple terms')">
+                        → Example: Bitcoin halving
+                    </button>
+                    <button class="example-btn" onclick="setPrompt('How does the Sentient GRID route queries?')">
+                        → Example: GRID routing
+                    </button>
+                </div>
+                
+                <button id="submitBtn" onclick="submitQuery()">
+                    Send to GRID →
+                </button>
+            </div>
+            
+            <div class="card">
+                <h2>
+                    <span id="statusIndicator"></span>
+                    Live Workflow
+                </h2>
+                <div class="visualization">
+                    <div id="eventLog" class="event-log">
+                        <p style="text-align: center; color: #a6b3c2; padding: 2rem;">
+                            Submit a query to see the GRID workflow in action
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Built with ❤️ by the Sentient community</p>
+            <p style="margin-top: 0.5rem; font-size: 0.875rem;">
+                Backend API: <span id="apiStatus" style="color: #4ee3e6;">Checking...</span> |
+                Mode: <span id="realtimeStatus" style="color: #7c9cff;">Checking...</span>
+            </p>
+        </footer>
+    </div>
+    
+    <script>
+        let ws = null;
+        let currentJobId = null;
+        
+        // Check API health and mode
+        async function checkHealth() {
+            try {
+                const response = await fetch('/health');
+                const data = await response.json();
+                document.getElementById('apiStatus').textContent = 'Connected ✓';
+                document.getElementById('apiStatus').style.color = '#4ee3e6';
+                
+                // Check if we're in real-time mode
+                const hasApiKey = data.realtimeAvailable || false;
+                if (hasApiKey) {
+                    document.getElementById('realtimeStatus').textContent = 'Real-time LLM ⚡';
+                    document.getElementById('realtimeStatus').style.color = '#4ee3e6';
+                } else {
+                    document.getElementById('realtimeStatus').textContent = 'Demo Mode 🎓';
+                    document.getElementById('realtimeStatus').style.color = '#7c9cff';
+                }
+            } catch (error) {
+                document.getElementById('apiStatus').textContent = 'Disconnected ✗';
+                document.getElementById('apiStatus').style.color = '#ff6b6b';
+                document.getElementById('realtimeStatus').textContent = 'Unknown';
+            }
+        }
+        
+        // Set example prompt
+        function setPrompt(text) {
+            document.getElementById('promptInput').value = text;
+        }
+        
+        // Get API keys from localStorage
+        async function getApiKeys() {
+            // First check if we have a saved wallet address
+            let walletAddress = localStorage.getItem('connected_wallet');
+            
+            // If saved wallet exists, verify it's still connected
+            if (walletAddress && window.ethereum) {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+                    if (!accounts || !accounts.includes(walletAddress)) {
+                        // Wallet disconnected, clear it
+                        localStorage.removeItem('connected_wallet');
+                        walletAddress = null;
+                    }
+                } catch (e) {
+                    console.log('Failed to verify wallet');
+                    localStorage.removeItem('connected_wallet');
+                    walletAddress = null;
+                }
+            }
+            
+            const key = walletAddress ? `sentient_keys_${walletAddress}` : 'sentient_keys_local';
+            const saved = localStorage.getItem(key);
+            
+            console.log('Loading API keys with storage key:', key, 'Found:', !!saved);
+            
+            if (saved) {
+                try {
+                    return JSON.parse(saved);
+                } catch (e) {
+                    return {};
+                }
+            }
+            return {};
+        }
+        
+        // Submit query to GRID
+        async function submitQuery() {
+            const prompt = document.getElementById('promptInput').value.trim();
+            if (!prompt) {
+                alert('Please enter a question');
+                return;
+            }
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const eventLog = document.getElementById('eventLog');
+            
+            // Get API keys
+            const apiKeys = await getApiKeys();
+            const hasKeys = apiKeys.openai_key || apiKeys.anthropic_key || apiKeys.fireworks_key;
+            
+            if (!hasKeys) {
+                if (confirm('No API keys configured. Configure your keys now for real-time AI responses?\n\nClick OK to go to Settings, or Cancel to try demo mode.')) {
+                    window.location.href = '/settings.html';
+                    return;
+                }
+                // User clicked Cancel - they want demo mode, so continue with the query
+                console.log('User chose demo mode');
+            }
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processing...';
+            eventLog.innerHTML = '';
+            
+            document.getElementById('statusIndicator').innerHTML = '<span class="status-running"></span>';
+            
+            try {
+                // Build headers with API keys
+                const headers = {
+                    'Content-Type': 'application/json',
+                };
+                
+                if (apiKeys.openai_key) headers['X-OpenAI-Key'] = apiKeys.openai_key;
+                if (apiKeys.anthropic_key) headers['X-Anthropic-Key'] = apiKeys.anthropic_key;
+                if (apiKeys.fireworks_key) headers['X-Fireworks-Key'] = apiKeys.fireworks_key;
+                if (apiKeys.dobby_model) headers['X-Dobby-Model'] = apiKeys.dobby_model;
+                
+                // Create job
+                const response = await fetch('/api/ask', {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify({ prompt }),
+                });
+                
+                const { jobId, wsUrl } = await response.json();
+                currentJobId = jobId;
+                
+                // Connect to WebSocket
+                const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                const wsHost = window.location.host;
+                ws = new WebSocket(`${wsProtocol}//${wsHost}/ws/stream?jobId=${jobId}`);
+                
+                ws.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    addEvent(data);
+                    
+                    if (data.type === 'COMPLETE' || data.type === 'ERROR') {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Send to GRID →';
+                        document.getElementById('statusIndicator').innerHTML = '';
+                    }
+                };
+                
+                ws.onerror = (error) => {
+                    console.error('WebSocket error:', error);
+                    addEvent({
+                        type: 'ERROR',
+                        detail: 'Connection error',
+                        ts: new Date().toISOString()
+                    });
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Send to GRID →';
+                };
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to connect to GRID. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send to GRID →';
+            }
+        }
+        
+        // Add event to log
+        let streamingText = '';
+        function addEvent(data) {
+            const eventLog = document.getElementById('eventLog');
+            
+            const typeLabels = {
+                'ROUTED': '🔄 Query Routed',
+                'CLASSIFIED': '🏷️ Classified',
+                'WORKFLOW_PLANNED': '📋 Workflow Planned',
+                'TASK_ASSIGNED': '📤 Task Assigned',
+                'TASK_UPDATE': '⚙️ Processing',
+                'TASK_DONE': '✅ Task Complete',
+                'COMPOSE_START': '🔧 Composing Results',
+                'COMPOSE_DONE': '✨ Results Composed',
+                'FINAL': '🎯 Final Answer',
+                'COMPLETE': '🏁 Workflow Complete',
+                'ERROR': '❌ Error'
+            };
+            
+            // Handle streaming final answer
+            if (data.type === 'FINAL' && data.streaming) {
+                let finalEvent = document.getElementById('final-answer-event');
+                if (!finalEvent) {
+                    finalEvent = document.createElement('div');
+                    finalEvent.id = 'final-answer-event';
+                    finalEvent.className = 'event';
+                    const time = new Date(data.ts).toLocaleTimeString();
+                    finalEvent.innerHTML = `
+                        <div class="event-type">${typeLabels['FINAL']}</div>
+                        <div class="event-detail" id="streaming-text"></div>
+                        <div class="event-time">${time}</div>
+                    `;
+                    eventLog.appendChild(finalEvent);
+                }
+                
+                const streamingTextEl = document.getElementById('streaming-text');
+                if (streamingTextEl) {
+                    streamingText += data.partialText || '';
+                    streamingTextEl.textContent = streamingText;
+                }
+                eventLog.scrollTop = eventLog.scrollHeight;
+                return;
+            }
+            
+            // Reset streaming text for new workflow
+            if (data.type === 'ROUTED') {
+                streamingText = '';
+                const existingFinal = document.getElementById('final-answer-event');
+                if (existingFinal) existingFinal.remove();
+            }
+            
+            // Regular event
+            const event = document.createElement('div');
+            event.className = 'event';
+            
+            const typeLabel = typeLabels[data.type] || data.type;
+            const time = new Date(data.ts).toLocaleTimeString();
+            
+            event.innerHTML = `
+                <div class="event-type">${typeLabel}</div>
+                <div class="event-detail">${data.detail || data.partialText || data.fullText || ''}</div>
+                <div class="event-time">${time}</div>
+            `;
+            
+            eventLog.appendChild(event);
+            eventLog.scrollTop = eventLog.scrollHeight;
+        }
+        
+        // Connect wallet functionality
+        async function connectWallet() {
+            if (!window.ethereum) {
+                alert('MetaMask is not installed. Please install MetaMask to connect your wallet.');
+                return;
+            }
+            
+            try {
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                const walletAddress = accounts[0];
+                // Persist wallet address
+                localStorage.setItem('connected_wallet', walletAddress);
+                updateWalletUI(walletAddress);
+                
+                // Show success message
+                alert(`Wallet connected: ${walletAddress.substring(0, 6)}...${walletAddress.substring(38)}`);
+            } catch (error) {
+                console.error('Failed to connect wallet:', error);
+                alert('Failed to connect wallet. Please try again.');
+            }
+        }
+        
+        // Update wallet UI
+        async function updateWalletUI(address = null) {
+            const walletBtn = document.getElementById('walletBtn');
+            if (!walletBtn) return;
+            
+            // If no address provided, check localStorage first, then MetaMask
+            if (!address) {
+                address = localStorage.getItem('connected_wallet');
+                
+                // Verify with MetaMask if available
+                if (address && window.ethereum) {
+                    try {
+                        const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+                        if (!accounts || !accounts.includes(address)) {
+                            localStorage.removeItem('connected_wallet');
+                            address = null;
+                        }
+                    } catch (e) {
+                        console.log('Failed to verify wallet');
+                    }
+                }
+            } else {
+                // If address provided (user just connected), save it
+                localStorage.setItem('connected_wallet', address);
+            }
+            
+            if (address) {
+                walletBtn.textContent = `🔌 ${address.substring(0, 6)}...${address.substring(38)}`;
+                walletBtn.classList.add('wallet-connected');
+            } else {
+                walletBtn.textContent = '🔌 Connect Wallet';
+                walletBtn.classList.remove('wallet-connected');
+            }
+        }
+        
+        // Check for demo mode from session storage
+        function checkDemoMode() {
+            const demoMode = sessionStorage.getItem('demoMode');
+            const demoQuestion = sessionStorage.getItem('demoQuestion');
+            
+            if (demoMode === 'true' && demoQuestion) {
+                document.getElementById('promptInput').value = demoQuestion;
+                
+                // Clear session storage
+                sessionStorage.removeItem('demoMode');
+                sessionStorage.removeItem('demoQuestion');
+                
+                // Auto-submit the query
+                setTimeout(() => {
+                    submitQuery();
+                }, 500);
+            }
+        }
+        
+        // Initialize
+        checkHealth();
+        setInterval(checkHealth, 30000);
+        updateWalletUI();
+        checkDemoMode();
+        
+        // Listen for wallet changes
+        if (window.ethereum) {
+            window.ethereum.on('accountsChanged', (accounts) => {
+                updateWalletUI(accounts[0] || null);
+            });
+        }
+    </script>
+</body>
+</html>

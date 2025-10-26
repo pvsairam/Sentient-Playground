@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Topic {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  description String?
+  order       Int      @default(0)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  lessons     Lesson[]
+}
+
+model Lesson {
+  id             String        @id @default(uuid())
+  topicId        String
+  title          String
+  slug           String        @unique
+  summary        String
+  content        String        @db.Text
+  level          String        @default("beginner")
+  diagramPreset  String        @default("default")
+  cannedPrompt   String?
+  ogImage        String?
+  order          Int           @default(0)
+  published      Boolean       @default(true)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  topic          Topic         @relation(fields: [topicId], references: [id])
+  completions    Completion[]
+}
+
+model GraphPreset {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  nodes       Json
+  links       Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model CannedRun {
+  id          String   @id @default(uuid())
+  name        String
+  prompt      String
+  lessonId    String?
+  expectedFlow Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model User {
+  id          String       @id @default(uuid())
+  walletAddress String     @unique
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  completions Completion[]
+}
+
+model Completion {
+  id          String   @id @default(uuid())
+  userId      String
+  lessonId    String
+  completedAt DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+  lesson      Lesson   @relation(fields: [lessonId], references: [id])
+  
+  @@unique([userId, lessonId])
+}
+
+model UsageLog {
+  id          String    @id @default(uuid())
+  jobId       String    @unique
+  userId      String?
+  prompt      String    @db.Text
+  workflowType String?
+  createdAt   DateTime  @default(now())
+  completedAt DateTime?
+}
